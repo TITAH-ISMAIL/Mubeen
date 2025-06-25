@@ -1,0 +1,12 @@
+{
+  "name": "chrome-extention",
+  "version": "1.0.0",
+  "description": "<div dir=\"rtl\"> إضافة لمتصفح كروم تساعد على فهم القصائد العربية من خلال شرح المفردات الصعبة باستخدام الذكاء الاصطناعي. </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
