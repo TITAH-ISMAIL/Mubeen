@@ -111,7 +111,7 @@ function scrollToWord(index) {
     element.style.backgroundColor = "#ffeb3b"; // Highlight color
     setTimeout(() => {
       element.style.backgroundColor = ""; // Remove highlight after 2 seconds
-    }, 10000);
+    }, 2000);
   }
   
 }
