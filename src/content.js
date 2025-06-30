@@ -28,16 +28,15 @@ async function generateContent(poemText, apiKey) {
       parts: [
         {
           text: `You are an expert in Arabic poetry and lexicon. Your task is to identify and explain only the difficult or uncommon words in the given poem, based on their context.
+          You must respond with valid JSON only in the format:
+          {
+            "explanations": [
+              {"word": "word1", "meaning": "explanation1"},
+              {"word": "word2", "meaning": "explanation2"}
+            ]
+          }
 
-You must respond with valid JSON only in the format:
-{
-  "explanations": [
-    {"word": "word1", "meaning": "explanation1"},
-    {"word": "word2", "meaning": "explanation2"}
-  ]
-}
-
-Do not add any extra text, markdown, or formatting. Respond with pure JSON only.`,
+          Do not add any extra text, markdown, or formatting. Respond with pure JSON only.`,
         },
       ],
     },
@@ -97,4 +96,57 @@ chrome.storage.local.get("geminiApiKey", async (result) => {
     .join("");
 
   document.getElementById("word-explanation").innerHTML = explanationHTML;
+  mm()
 });
+
+// ############# Function to Highlight the word and scroll to it ###############
+let wordsExplaned = [];
+
+function scrollToWord(index) {
+  console.log("clicked index:", index);
+  let element = document.querySelectorAll("strong")[index];
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Highlight the word
+    element.style.backgroundColor = "#ffeb3b"; // Highlight color
+    setTimeout(() => {
+      element.style.backgroundColor = ""; // Remove highlight after 2 seconds
+    }, 10000);
+  }
+  
+}
+
+function mm() {
+  // Cleaning up the previous wordsExplaned array
+  wordsExplaned = [];
+
+  let wordsFromPage = document.querySelectorAll("strong");
+
+  for (let index = 0; index < wordsFromPage.length; index++) {
+    // Delete the :
+    let cleanWord = wordsFromPage[index].innerHTML.replace(/:/g, '');
+    wordsExplaned.push(cleanWord);
+  }
+
+  // Adding the clickable spans to the h3 elements
+  document.querySelectorAll("#poem_content h3").forEach((shatter) => {
+    for (let index = 0; index < wordsExplaned.length; index++) {
+      let word = wordsExplaned[index];
+      let regex = new RegExp(word, 'g');
+
+      // Replace the word with a clickable span
+      shatter.innerHTML = shatter.innerHTML.replace(
+        regex,
+        `<span class="clickable-word" data-index="${index}" style="background: #6f6f6f57; padding: 2px 5px; border-radius: 3px; cursor: pointer;">${word}</span>`
+      );
+    }
+  });
+
+  document.querySelectorAll(".clickable-word").forEach((span) => {
+    span.addEventListener("click", function () {
+      const index = this.getAttribute("data-index");
+      scrollToWord(index);
+    });
+  });
+
+}
