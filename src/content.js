@@ -3,7 +3,7 @@ const targetNav = document.getElementsByClassName("s-menu1")[4];
 const myDiv = document.createElement("div");
 myDiv.innerHTML = `
   <div id="word-explanation-container">
-    <h3><i class="fa fa-book px-2"></i>شرح الألفاظ</h3>
+    <h3><i class="fa fa-book px-2"></i>شرح الالفاظ</h3>
     <div id="word-explanation" class="px-2 mb-4">جارٍ التحميل...</div>
   </div>
 `;
